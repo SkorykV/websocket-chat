@@ -8,13 +8,28 @@
     <title>WebChat</title>
   </head>
   <body>
-    <h3 class="header">Setup</h3>
-    <form action="/setup" method="POST">
-      <select name="color" id="color">
-        <option value="blue">blue</option>
-        <option value="yellow">yellow</option>
-      </select>
-    </form>
-    <img src="/images/pikachu.jpg" alt="pikachu" class="main-image" />
+    <div class="content">
+      <h2 class="header">Basic setup before we start</h3>
+      <form action="/setup" method="POST" enctype="multipart/form-data">   
+        <div class="control">
+          <label for="avatar">Your avatar:</label>
+          <input type="file" id="avatar" name="avatar">
+        </div>
+        <div class="control">
+          <label for="username">Username:</label>
+          <input type="text" id="username" name="username">
+        </div>
+        <div class="control">
+          <label for="color">Messages color:</label>
+          <select name="color" id="color">
+            <option value="blue">blue</option>
+            <option value="yellow">yellow</option>
+          </select>
+        </div>
+        <div class="form-footer">
+          <input type="submit" value="Submit" class="submit-btn" />
+        </div>
+      </form>
+    </div>
   </body>
 </html>

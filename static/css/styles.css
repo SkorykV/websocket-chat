@@ -1,5 +1,41 @@
+.content {
+  margin: 20px auto 0;
+  padding: 20px;
+  max-width: 400px;
+  border: 1px solid gray;
+}
+
 .header {
+  text-align: center;
   color: darkgreen;
+}
+
+.control {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: baseline;
+}
+
+.control:nth-child(n + 2) {
+  margin-top: 10px;
+}
+
+.control > label {
+  width: 120px;
+  margin-right: 10px;
+  text-align: right;
+}
+
+.form-footer {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.submit-btn {
+  display: inline-block;
 }
 
 .main-image {
