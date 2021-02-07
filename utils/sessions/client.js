@@ -19,8 +19,8 @@ class Client {
     const client = new Client(req, res);
     const cookies = client.parseCookies();
 
-    if (cookies.token) {
-      client.token = cookies.token;
+    if (cookies['X-Authorization']) {
+      client.token = cookies['X-Authorization'];
       await Session.load(client);
     }
 

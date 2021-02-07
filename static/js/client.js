@@ -1,6 +1,10 @@
-const socket = new WebSocket('ws://127.0.0.1:8000/chat');
-const CHAR_RETURN = 13;
+const socket = new WebSocket(`ws://localhost:8000/chat`);
 document.addEventListener('DOMContentLoaded', ready);
+
+COLOR_CLASSES = {
+  blue: 'chat-content-message-text-container__text--blue',
+  yellow: 'chat-content-message-text-container__text--yellow',
+};
 
 function ready() {
   const chat = document.getElementsByClassName('chat-content')[0];
@@ -40,17 +44,28 @@ function printMessage(chat, message, config) {
   avatar.className = 'chat-content-message__image';
   avatar.setAttribute('src', config.avatar);
 
+  const textContainer = document.createElement('div');
+  textContainer.className = 'chat-content-message-text-container';
+
   const username = document.createElement('div');
-  username.className = 'chat-content-message__username';
+  username.className = 'chat-content-message-text-container__username';
   username.textContent = config.username + ':';
 
   const text = document.createElement('div');
-  text.className = 'chat-content-message__text';
+  text.className = 'chat-content-message-text-container__text';
   text.textContent = message;
 
+  const colorClass = COLOR_CLASSES[config.color];
+
+  if (colorClass) {
+    text.className += ` ${colorClass}`;
+  }
+
+  textContainer.appendChild(username);
+  textContainer.appendChild(text);
+
   messageContainer.appendChild(avatar);
-  messageContainer.appendChild(username);
-  messageContainer.appendChild(text);
+  messageContainer.appendChild(textContainer);
 
   chat.appendChild(messageContainer);
 }

@@ -44,11 +44,31 @@
 }
 
 .chat-content-message__image {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   display: block;
 }
 
-.chat-content-message__username {
-  margin: 0 5px;
+.chat-content-message-text-container {
+  flex: 1 1 auto;
+  margin-left: 10px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-content-message-text-container__username {
+  font-weight: bold;
+}
+
+.chat-content-message-text-container__text {
+  font-weight: bolder;
+}
+
+.chat-content-message-text-container__text--blue {
+  color: darkblue;
+}
+
+.chat-content-message-text-container__text--yellow {
+  color: gold;
 }

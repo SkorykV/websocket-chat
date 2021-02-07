@@ -38,7 +38,7 @@ class Session extends Map {
     session.token = token;
 
     client.token = token;
-    client.setCookie('token', token);
+    client.setCookie('X-Authorization', token);
     client.session = session;
   }
 

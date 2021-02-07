@@ -1,7 +1,4 @@
 const http = require('http');
-const fs = require('fs');
-const path = require('path');
-const stream = require('stream');
 const WebSocket = require('ws');
 
 const Client = require('./utils/sessions/client');
@@ -14,6 +11,14 @@ const server = http.createServer(async (req, res) => {
   if ((req.url === '/' || req.url === '/setup') && client.session) {
     client.res.writeHead(302, {
       Location: 'chat.html',
+    });
+    client.res.end();
+    return;
+  }
+
+  if (req.url === '/chat.html' && !client.session) {
+    client.res.writeHead(302, {
+      Location: '/',
     });
     client.res.end();
     return;
@@ -35,14 +40,20 @@ const server = http.createServer(async (req, res) => {
 
 const wss = new WebSocket.Server({ server });
 
-wss.on('connection', async (socket, req) => {
+wss.on('connection', async (socket, request) => {
   // broadcastMessage(wss, 'Someone connected to the chat');
+  const client = await Client.retreiveClient(request, socket);
+
+  if (!client.session) {
+    socket.close();
+    return;
+  }
 
   socket.on('message', messageText => {
     const message = JSON.stringify({
-      username: 'Volodymyr',
-      avatar: 'images/avatars/pikachu.jpg',
-      color: 'blue',
+      username: client.session.get('username'),
+      avatar: 'images/avatars/' + client.session.get('avatar'),
+      color: client.session.get('color'),
       data: messageText,
     });
     broadcastMessage(wss, message);
