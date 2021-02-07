@@ -1,5 +1,6 @@
 todo.txt
 node_modules/
+sessions/*
 *.jpeg
 *.jpg
 *.png

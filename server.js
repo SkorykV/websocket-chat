@@ -4,15 +4,32 @@ const path = require('path');
 const stream = require('stream');
 const WebSocket = require('ws');
 
+const Client = require('./utils/sessions/client');
+const Session = require('./utils/sessions/session');
 const { staticHandler, multipartFormHandler } = require('./handlers');
 
-const server = http.createServer((req, res) => {
+const server = http.createServer(async (req, res) => {
+  const client = await Client.retreiveClient(req, res);
+
+  if ((req.url === '/' || req.url === '/setup') && client.session) {
+    client.res.writeHead(302, {
+      Location: 'chat.html',
+    });
+    client.res.end();
+    return;
+  }
+
   if (req.method === 'GET') {
     const filePath = req.url === '/' ? '/index.html' : req.url;
     staticHandler(filePath, res);
   }
   if (req.method === 'POST' && req.url === '/setup') {
-    multipartFormHandler(req, res);
+    await Session.createSession(client);
+    multipartFormHandler(client);
+  }
+
+  if (client.session) {
+    client.session.save();
   }
 });
 

@@ -9,8 +9,9 @@ const UPLOAD_DIR = './static/images/avatars';
 const UPLOAD_DIR_ABSOLUTE_PATH = path.join(process.cwd(), UPLOAD_DIR);
 
 class MultipartFormParser extends stream.Transform {
-  constructor(boundary, options) {
+  constructor(boundary, client, options) {
     super({ ...options, decodeStrings: true });
+    this.client = client;
     this.data = Buffer.alloc(0);
     this.fields = {};
 
@@ -50,7 +51,9 @@ class MultipartFormParser extends stream.Transform {
     if (this.finishedProcessingChunk) {
       this.finishedProcessingChunk();
     }
-    console.log(this.fields);
+    Object.entries(this.fields).forEach(field => {
+      this.client.session.set(field[0], field[1]);
+    });
   }
 }
 

@@ -27,17 +27,13 @@ function staticHandler(filePath, res) {
 
   const readStream = fs.createReadStream(absoluteFilePath);
 
-  readStream
-    .on('error', error => {
-      if (error.code === 'ENOENT') {
-        sendHttpError(res, http_404);
-      } else {
-        sendHttpError(res, http_500);
-      }
-    })
-    .on('end', () => {
-      // console.log('returned', filePath);
-    });
+  readStream.on('error', error => {
+    if (error.code === 'ENOENT') {
+      sendHttpError(res, http_404);
+    } else {
+      sendHttpError(res, http_500);
+    }
+  });
 
   readStream.pipe(res);
 }
