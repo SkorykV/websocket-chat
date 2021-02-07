@@ -33,6 +33,39 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
+const wss = new WebSocket.Server({ server });
+
+wss.on('connection', async (socket, req) => {
+  // broadcastMessage(wss, 'Someone connected to the chat');
+
+  socket.on('message', messageText => {
+    const message = JSON.stringify({
+      username: 'Volodymyr',
+      avatar: 'images/avatars/pikachu.jpg',
+      color: 'blue',
+      data: messageText,
+    });
+    broadcastMessage(wss, message);
+  });
+});
+
+function broadcastMessage(server, message) {
+  sendMessage(server.clients, message);
+}
+
+function sendMessage(clients, message) {
+  for (const client of clients) {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(message);
+    }
+  }
+}
+
+function sendToOthers(server, sender, message) {
+  const recepients = [...server.clients].filter(client => client !== sender);
+  sendMessage(recepients, message);
+}
+
 server.listen(8000, () => {
   console.log('Server is listening');
 });
